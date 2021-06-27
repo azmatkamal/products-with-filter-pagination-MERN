@@ -2,6 +2,7 @@ var express = require("express");
 var cors = require("cors");
 var bodyParser = require("body-parser");
 var logger = require("morgan");
+const mongoose = require("mongoose");
 const helmet = require("helmet");
 var app = express();
 
@@ -35,6 +36,13 @@ app.use((req, res, next) => {
   );
   next();
 });
+
+const mongoURI = require("./config/keys").mongoURI;
+
+mongoose
+  .connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("MongoDB Connected"))
+  .catch((err) => console.log(err));
 
 app.listen(port, () => {
   console.log("Server is running on port: " + port);
