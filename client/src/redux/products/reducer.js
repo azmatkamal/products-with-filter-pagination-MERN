@@ -1,8 +1,9 @@
-import { GET_PRODUCTS, GET_PRODUCT } from "../types";
+import { GET_PRODUCTS, GET_PRODUCT, GET_PRODUCT_META } from "../types";
 
 const initialState = {
   product: {},
   products: [],
+  meta: {},
 };
 
 const reducer = (state = initialState, action) => {
@@ -16,6 +17,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         product: action.payload,
+      };
+    case GET_PRODUCT_META:
+      return {
+        ...state,
+        meta: action.payload,
       };
     default:
       return state;

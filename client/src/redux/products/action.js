@@ -13,12 +13,19 @@ export const getProducts = (data, loading) => (dispatch) => {
   dispatch({ type: CLEAR_ALERTS });
   dispatch({ type: CLEAR_ERRORS });
   loading();
+  console.log(data);
   axios
     .post("/api", data)
     .then((res) => {
       dispatch({
         type: GET_PRODUCTS,
         payload: res.data.docs,
+      });
+      const meta = res.data;
+      delete meta.docs;
+      dispatch({
+        type: GET_PRODUCT_META,
+        payload: meta,
       });
       loading();
     })
