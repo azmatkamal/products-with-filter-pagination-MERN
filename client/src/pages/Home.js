@@ -5,6 +5,7 @@ import DataTable from "react-data-table-component";
 import { Row, Col } from "reactstrap";
 import { getProducts } from "../redux/products/action";
 import { withRouter } from "react-router-dom";
+import TableSubHeader from "../components/TableSubHeader";
 
 const columns = [
   {
@@ -59,9 +60,50 @@ class Home extends Component {
       products: [],
       isLoading: false,
       page_number: 1,
+      order: "",
+      order_column: "",
+      keyword: "",
+      keyword_column: "",
+      per_page: 25,
       meta: {},
     };
   }
+
+  onChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
+  onSortClick = (e) => {
+    const {
+      order,
+      order_column,
+      keyword,
+      keyword_column,
+      per_page,
+      page_number,
+    } = this.state;
+    this.props.getProducts(
+      { order, order_column, keyword, keyword_column, per_page, page_number },
+      this.showLoader
+    );
+  };
+
+  onFilterClick = (e) => {
+    this.setState({ page_number: 1 });
+    const { order, order_column, keyword, keyword_column, per_page } =
+      this.state;
+    this.props.getProducts(
+      {
+        order,
+        order_column,
+        keyword,
+        keyword_column,
+        per_page,
+        page_number: 1,
+      },
+      this.showLoader
+    );
+  };
 
   setPage = (page) => {
     this.setState({ page_number: page });
@@ -73,9 +115,29 @@ class Home extends Component {
 
   componentDidMount() {
     this.props.getProducts(
-      { page_number: this.state.page_number },
+      { page_number: this.state.page_number, per_page: this.state.per_page },
       this.showLoader
     );
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.state.page_number !== prevState.page_number ||
+      this.state.per_page !== prevState.per_page
+    ) {
+      const {
+        order,
+        order_column,
+        keyword,
+        keyword_column,
+        per_page,
+        page_number,
+      } = this.state;
+      this.props.getProducts(
+        { order, order_column, keyword, keyword_column, per_page, page_number },
+        this.showLoader
+      );
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -88,7 +150,29 @@ class Home extends Component {
   }
 
   render() {
-    const { products, isLoading, meta } = this.state;
+    const {
+      products,
+      isLoading,
+      order,
+      order_column,
+      keyword,
+      keyword_column,
+      per_page,
+      meta,
+    } = this.state;
+
+    const SubHeader = (
+      <TableSubHeader
+        onChange={this.onChange}
+        order={order}
+        order_column={order_column}
+        keyword={keyword}
+        keyword_column={keyword_column}
+        onSortClick={this.onSortClick}
+        onFilterClick={this.onFilterClick}
+        per_page={per_page}
+      />
+    );
 
     return (
       <div>
@@ -102,6 +186,8 @@ class Home extends Component {
                 <DataTable
                   style={{ cursor: "pointer" }}
                   noHeader
+                  subHeader
+                  subHeaderComponent={SubHeader}
                   columns={columns}
                   data={products}
                   highlightOnHover
