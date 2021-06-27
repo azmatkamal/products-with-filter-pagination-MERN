@@ -2,6 +2,7 @@ var express = require("express");
 var cors = require("cors");
 var bodyParser = require("body-parser");
 var logger = require("morgan");
+const path = require("path");
 const mongoose = require("mongoose");
 const helmet = require("helmet");
 var app = express();
@@ -43,6 +44,16 @@ mongoose
   .connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
+
+var API = require(`./routes/api`);
+app.use(`/api`, API);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
 
 app.listen(port, () => {
   console.log("Server is running on port: " + port);
