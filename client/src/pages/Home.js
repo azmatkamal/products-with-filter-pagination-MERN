@@ -1,7 +1,137 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import LoadingOverlay from "react-loading-overlay";
+import DataTable from "react-data-table-component";
+import { Row, Col } from "reactstrap";
+import { getProducts } from "../redux/products/action";
+import { withRouter } from "react-router-dom";
 
-export default class Home extends Component {
+const columns = [
+  {
+    name: "Image",
+    maxWidth: "75px",
+    cell: (row) => (
+      <img height="50px" width="50px" alt={row.title} src={row.image_link} />
+    ),
+  },
+  {
+    name: "Title",
+    maxWidth: "200px",
+    selector: "title",
+  },
+  {
+    name: "Brand",
+    maxWidth: "75px",
+    selector: "brand",
+  },
+  {
+    name: "Price",
+    maxWidth: "75px",
+    selector: "price",
+  },
+  {
+    name: "Availability",
+    maxWidth: "75px",
+    selector: "availability",
+  },
+  {
+    name: "Condition",
+    maxWidth: "75px",
+    selector: "condition",
+  },
+  {
+    name: "Shipping",
+    maxWidth: "125px",
+    selector: "shipping",
+  },
+  {
+    name: "Description",
+    maxWidth: "300px",
+    selector: "description",
+  },
+];
+
+class Home extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      products: [],
+      isLoading: false,
+      page_number: 1,
+      meta: {},
+    };
+  }
+
+  setPage = (page) => {
+    this.setState({ page_number: page });
+  };
+
+  showLoader = () => {
+    this.setState({ isLoading: !this.state.isLoading });
+  };
+
+  componentDidMount() {
+    this.props.getProducts(
+      { page_number: this.state.page_number },
+      this.showLoader
+    );
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps && nextProps.products) {
+      this.setState({ products: nextProps.products });
+    }
+    if (nextProps && nextProps.meta) {
+      this.setState({ meta: nextProps.meta });
+    }
+  }
+
   render() {
-    return <div>Hope page</div>;
+    const { products, isLoading, meta } = this.state;
+
+    return (
+      <div>
+        <Row>
+          <Col md="12">
+            <LoadingOverlay active={isLoading} spinner text="Please Wait...">
+              <div style={{ minHeight: "300px" }}>
+                <div>
+                  <h3>Products</h3>
+                </div>
+                <DataTable
+                  style={{ cursor: "pointer" }}
+                  noHeader
+                  columns={columns}
+                  data={products}
+                  highlightOnHover
+                  pagination
+                  paginationServer
+                  paginationTotalRows={meta.totalDocs}
+                  paginationPerPage={25}
+                  paginationComponentOptions={{
+                    noRowsPerPage: true,
+                  }}
+                  onChangePage={this.setPage}
+                  onRowClicked={(row) =>
+                    this.props.history.push(`product/${row._id}`)
+                  }
+                  persistTableHead
+                />
+              </div>
+            </LoadingOverlay>
+          </Col>
+        </Row>
+      </div>
+    );
   }
 }
+
+const mapDispatchToProps = (state) => {
+  return {
+    products: state.product.products,
+    meta: state.product.meta,
+  };
+};
+
+export default connect(mapDispatchToProps, { getProducts })(withRouter(Home));
