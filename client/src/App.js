@@ -1,5 +1,5 @@
 import React, { Component, Suspense } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 
@@ -27,6 +27,7 @@ class App extends Component {
                   name="Product Page"
                   render={(props) => <Product {...props} />}
                 />
+                <Redirect from="/product" to="/" />
                 <Route
                   path="/"
                   name="Home"

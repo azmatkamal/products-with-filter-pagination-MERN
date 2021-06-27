@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import LoadingOverlay from "react-loading-overlay";
 import DataTable from "react-data-table-component";
 import { Row, Col } from "reactstrap";
+import MetaTags from "react-meta-tags";
 import { getProducts } from "../redux/products/action";
 import { withRouter } from "react-router-dom";
 import TableSubHeader from "../components/TableSubHeader";
@@ -178,6 +179,9 @@ class Home extends Component {
       <div>
         <Row>
           <Col md="12">
+            <MetaTags>
+              <title>Products Listing</title>
+            </MetaTags>
             <LoadingOverlay active={isLoading} spinner text="Please Wait...">
               <div style={{ minHeight: "300px" }}>
                 <div>
