@@ -42,6 +42,5 @@ The Database using MongoDB free cluster, the application is deployed at heroku @
 <br/>
 <br/>
 
-<br/>
 Note: The sample data CSV contains the data of more than 512MB in size. The free cluster of MongoDB allows max of 512MB size of data so not whole CSV was imported.
 <br/>
