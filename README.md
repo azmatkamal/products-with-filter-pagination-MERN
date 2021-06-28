@@ -1,24 +1,24 @@
 # MERN application for products listing and viewing (Job Test)
 
-run application in development mode using:
+## Run application in development mode using:
 <br/>
-npm run dev
-<br/>
-<br/>
-
-run server only using:
-<br/>
-npm run server
+### `npm run dev`
 <br/>
 <br/>
 
-run client only using:
+## Run server only using:
 <br/>
-npm start --prefix client
+### `npm run server`
 <br/>
 <br/>
 
-BACKEND - NodeJS
+## Run client only using:
+<br/>
+### `npm start --prefix client`
+<br/>
+<br/>
+
+## BACKEND - NodeJS
 <br/>
 config -> contains the configuration like internal KEYS
 <br/>
@@ -28,7 +28,7 @@ routes => contains the API routes
 <br/>
 <br/>
 
-FONTEND - ReactJS (Client folder)
+## FONTEND - ReactJS (Client folder)
 <br/>
 components -> common components like Main Menu, the Filter section.
 <br/>
@@ -42,5 +42,7 @@ The Database using MongoDB free cluster, the application is deployed at heroku @
 <br/>
 <br/>
 
-Note: The sample data CSV contains the data of more than 512MB in size. The free cluster of MongoDB allows max of 512MB size of data so not whole CSV was imported.
+## Note:
+<br/>
+The sample data CSV contains the data of more than 512MB in size. The free cluster of MongoDB allows max of 512MB size of data so not whole CSV was imported.
 <br/>
