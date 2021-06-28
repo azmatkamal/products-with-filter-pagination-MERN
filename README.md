@@ -1,4 +1,6 @@
-# azmatkamal-product-with-filter-pagination-MERN
+# product-with-filter-pagination-MERN
+
+# This is MERN application for products listing and viewing (Job Test)
 
 run application in development mode using:
 <br/>
